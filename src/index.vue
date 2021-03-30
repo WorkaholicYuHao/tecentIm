@@ -1,8 +1,11 @@
 <template>
   <div class="container">
     <div id="wrapper" v-if="!isLogin" >
-      <login />
-      <qr-code-list/>
+	  <iframe style="width: 100%;height: 700px;" src="https://trtc-1252463788.cos.ap-guangzhou.myqcloud.com/web/demo/env-detect/index.html " v-if="!ifSuccess"></iframe>
+	  <div v-else>      
+		<login />
+		<qr-code-list/>
+	  </div>
     </div>
     <div
       class="loading"
@@ -53,7 +56,8 @@ export default {
   title: 'TIMSDK DEMO',
   data () {
     return {
-      loginType: 2 // github 登录只使用默认账号登录
+      loginType: 2 ,// github 登录只使用默认账号登录,
+	  ifSuccess: false
     }
   },
   components: {
