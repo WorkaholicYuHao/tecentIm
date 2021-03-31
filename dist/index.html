@@ -1,9 +1,39 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta name=renderer content=webkit><meta name=force-rendering content=webkit><meta http-equiv=X-UA-Compatible content="IE=Edge,chrome=1"><title>im测试</title><link rel=icon href=favicon.ico type=image/x-icon><link href=css/vendors~app.a1ead67b.css rel=stylesheet><link href=css/app.89351e67.css rel=stylesheet></head><body><div id=app></div><script src=./debug/GenerateTestUserSig.js></script><script src=./debug/lib-generate-test-usersig.min.js></script><script>navigator.getUserMedia({video: true,audio: true},onSuccess, onError)
-	  
-	  function onSuccess(stream) {
-		console.log('成功回调')
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=renderer content=webkit><meta name=force-rendering content=webkit><meta http-equiv=X-UA-Compatible content="IE=Edge,chrome=1"><title>im测试</title><link rel=icon href=favicon.ico type=image/x-icon><link href=css/vendors~app.a1ead67b.css rel=stylesheet><link href=css/app.89351e67.css rel=stylesheet></head><body><div id=app></div><script src=./debug/GenerateTestUserSig.js></script><script src=./debug/lib-generate-test-usersig.min.js></script><script>if (navigator.mediaDevices === undefined) {
+	    navigator.mediaDevices = {};
 	  }
 	  
-	  function onError(error) {
-	    console.log("失败回调", error);
-	  }</script><script src=js/vendors~app.c6c30c06.js></script><script src=js/app.cadf5c41.js></script></body></html>
+	  if (navigator.mediaDevices.getUserMedia === undefined) {
+	    navigator.mediaDevices.getUserMedia = function(constraints) {
+	  
+	      // 首先，如果有getUserMedia的话，就获得它
+	      var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+	  
+	      // 一些浏览器根本没实现它 - 那么就返回一个error到promise的reject来保持一个统一的接口
+	      if (!getUserMedia) {
+	        return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+	      }
+	  
+	      // 否则，为老的navigator.getUserMedia方法包裹一个Promise
+	      return new Promise(function(resolve, reject) {
+	        getUserMedia.call(navigator, constraints, resolve, reject);
+	      });
+	    }
+	  }
+	  
+	  navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+	  .then(function(stream) {
+
+	  })
+	  .catch(function(err) {
+	    alert(err.name + ": " + err.message);
+	  });
+
+	 //  navigator.getUserMedia({video: true,audio: true},onSuccess, onError)
+	  
+	 //  function onSuccess(stream) {
+		// console.log('成功回调')
+	 //  }
+	  
+	 //  function onError(error) {
+	 //    console.log("失败回调", error);
+	 //  }</script><script src=js/vendors~app.c6c30c06.js></script><script src=js/app.cadf5c41.js></script></body></html>
